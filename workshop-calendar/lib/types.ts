@@ -1,0 +1,27 @@
+export interface Workshop {
+  _id: string
+  title: string
+  description: string
+  workshopType: Array<'coding' | 'design' | 'collab'> | 'coding' | 'design' | 'collab'
+  dateTime: string
+  dayOfWeek: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday'
+  slideLink?: string
+  recordingLink?: string
+  preworkshopMaterials?: Array<{
+    title: string
+    link: string
+  }>
+}
+
+export interface Officer {
+  _id: string
+  name: string
+  role: string
+  yearInSchool: 'freshman' | 'sophomore' | 'junior' | 'senior'
+  order?: number
+}
+
+export interface GroupedWorkshops {
+  date: string // ISO date string (YYYY-MM-DD)
+  workshops: Workshop[]
+}

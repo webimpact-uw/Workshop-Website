@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 
 interface BadgeProps {
   children: React.ReactNode
-  variant?: 'coding' | 'design' | 'collab' | 'past'
+  variant?: 'coding' | 'design' | 'collab' | 'pm' | 'past'
   className?: string
 }
 
@@ -15,6 +15,7 @@ export function Badge({ children, variant = 'coding', className }: BadgeProps) {
           'bg-primary-600 text-white': variant === 'coding',
           'bg-primary-400 text-white': variant === 'design',
           'bg-[#14b8a6] text-white': variant === 'collab',
+          'bg-[#f59e0b] text-white': variant === 'pm',
           'bg-gray-400 text-white': variant === 'past',
         },
         className

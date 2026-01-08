@@ -16,13 +16,14 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
       coding: 'Coding',
       design: 'Design',
       collab: 'Collab',
+      pm: 'PM',
     }
     return labels[type as keyof typeof labels] || type
   }
 
   const getBadgeVariant = (type: string) => {
     if (past) return 'past'
-    return type as 'coding' | 'design' | 'collab'
+    return type as 'coding' | 'design' | 'collab' | 'pm'
   }
 
   // Ensure workshopType is always an array (handle legacy data)
@@ -41,6 +42,7 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
           'border-primary-600': !past && primaryType === 'coding',
           'border-primary-400': !past && primaryType === 'design',
           'border-[#14b8a6]': !past && primaryType === 'collab',
+          'border-[#f59e0b]': !past && primaryType === 'pm',
           'border-gray-300 opacity-60': past,
           'ring-2 ring-primary-500 ring-offset-2': today,
         }
@@ -62,11 +64,13 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
         </div>
 
         {/* Time */}
-        <div className="text-sm text-black dark:text-gray-400">
-          <p className="font-medium">
-            {formatTime(workshop.dateTime)}
-          </p>
-        </div>
+        {workshop.dateTime && (
+          <div className="text-sm text-black dark:text-gray-400">
+            <p className="font-medium">
+              {formatTime(workshop.dateTime)}
+            </p>
+          </div>
+        )}
 
         {/* Description */}
         {workshop.description && (

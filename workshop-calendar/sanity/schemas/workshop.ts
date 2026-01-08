@@ -30,6 +30,7 @@ export default defineType({
           { title: 'Coding', value: 'coding' },
           { title: 'Design', value: 'design' },
           { title: 'Collab Lecture', value: 'collab' },
+          { title: 'Project Manager', value: 'pm' },
         ],
       },
       validation: (Rule) => Rule.required().min(1),
@@ -58,7 +59,6 @@ export default defineType({
       name: 'dateTime',
       title: 'Date & Time',
       type: 'datetime',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'dayOfWeek',

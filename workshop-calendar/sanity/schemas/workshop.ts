@@ -36,6 +36,26 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
+      name: 'quarter',
+      title: 'Quarter',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Fall', value: 'fall' },
+          { title: 'Winter', value: 'winter' },
+          { title: 'Spring', value: 'spring' },
+        ],
+        layout: 'dropdown',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'year',
+      title: 'Year',
+      type: 'number',
+      validation: (Rule) => Rule.required().integer().min(2024).max(2030),
+    }),
+    defineField({
       name: 'dateTime',
       title: 'Date & Time',
       type: 'datetime',

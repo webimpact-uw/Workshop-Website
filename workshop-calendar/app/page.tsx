@@ -1,15 +1,48 @@
 import { client } from '@/sanity/client'
-import { WORKSHOPS_QUERY } from '@/sanity/queries'
+import { WORKSHOPS_QUERY, WORKSHOPS_BY_QUARTER_QUERY, AVAILABLE_QUARTERS_QUERY } from '@/sanity/queries'
 import { Workshop } from '@/lib/types'
 import { groupByDate } from '@/lib/utils'
 import { CalendarView } from '@/components/calendar/CalendarView'
+import { QuarterFilter } from '@/components/QuarterFilter'
 
+// Make this page dynamic so it re-fetches on each request
+export const dynamic = 'force-dynamic'
 // Enable ISR with 60 second revalidation
 export const revalidate = 60
 
-export default async function HomePage() {
-  // Fetch workshops from Sanity
-  const workshops = await client.fetch<Workshop[]>(WORKSHOPS_QUERY)
+interface HomePageProps {
+  searchParams: Promise<{ quarter?: string; year?: string }>
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { quarter, year } = await searchParams
+
+  // Fetch workshops from Sanity - filtered by quarter/year if provided
+  let workshops: Workshop[]
+
+  if (quarter && year) {
+    workshops = await client.fetch<Workshop[]>(
+      WORKSHOPS_BY_QUARTER_QUERY,
+      { quarter, year: parseInt(year) }
+    )
+  } else {
+    workshops = await client.fetch<Workshop[]>(WORKSHOPS_QUERY)
+  }
+
+  // Fetch available quarters (unique combinations of quarter/year that have workshops)
+  const allQuarters = await client.fetch<Array<{ quarter: 'fall' | 'winter' | 'spring'; year: number }>>(
+    AVAILABLE_QUARTERS_QUERY
+  )
+
+  // Remove duplicates and sort
+  const availableQuarters = Array.from(
+    new Map(allQuarters.map(item => [`${item.quarter}-${item.year}`, item])).values()
+  ).sort((a, b) => {
+    if (a.year !== b.year) return b.year - a.year // Sort by year descending
+    // Sort quarters: spring > winter > fall within same year
+    const quarterOrder = { spring: 3, winter: 2, fall: 1 }
+    return quarterOrder[b.quarter] - quarterOrder[a.quarter]
+  })
 
   // Group workshops by date (chronological with gaps filled in)
   const groupedWorkshops = groupByDate(workshops)
@@ -26,6 +59,11 @@ export default async function HomePage() {
             Workshop calendar for coding, design, and collaboration
           </p>
         </header>
+
+        {/* Quarter Filter */}
+        <div className="flex justify-center">
+          <QuarterFilter availableQuarters={availableQuarters} />
+        </div>
 
         {/* Calendar */}
         <CalendarView groupedWorkshops={groupedWorkshops} />

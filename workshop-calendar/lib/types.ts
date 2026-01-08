@@ -3,6 +3,8 @@ export interface Workshop {
   title: string
   description: string
   workshopType: Array<'coding' | 'design' | 'collab'> | 'coding' | 'design' | 'collab'
+  quarter: 'fall' | 'winter' | 'spring'
+  year: number
   dateTime: string
   dayOfWeek: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday'
   slideLink?: string

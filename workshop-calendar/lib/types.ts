@@ -2,10 +2,12 @@ export interface Workshop {
   _id: string
   title: string
   description?: string
-  workshopType: Array<'coding' | 'design' | 'collab'> | 'coding' | 'design' | 'collab'
+  workshopType?: Array<'coding' | 'design' | 'collab' | 'pm'> | 'coding' | 'design' | 'collab' | 'pm'
+  skillLevel?: Array<'beginner' | 'advanced'>
+  audience?: 'member' | 'public'
   quarter: 'fall' | 'winter' | 'spring'
   year: number
-  dateTime: string
+  dateTime?: string
   dayOfWeek: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday'
   slideLink?: string
   recordingLink?: string

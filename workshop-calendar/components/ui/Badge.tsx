@@ -12,8 +12,8 @@ export function Badge({ children, variant = 'coding', className }: BadgeProps) {
       className={cn(
         'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
         {
-          'bg-primary-600 text-white': variant === 'coding',
-          'bg-primary-400 text-white': variant === 'design',
+          'bg-[#8b5cf6] text-white': variant === 'coding',
+          'bg-[#ec4899] text-white': variant === 'design',
           'bg-[#14b8a6] text-white': variant === 'collab',
           'bg-[#f59e0b] text-white': variant === 'pm',
           'bg-gray-400 text-white': variant === 'past',

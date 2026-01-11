@@ -1,8 +1,7 @@
 import { client } from '@/sanity/client'
 import { WORKSHOPS_QUERY, WORKSHOPS_BY_QUARTER_QUERY, AVAILABLE_QUARTERS_QUERY } from '@/sanity/queries'
 import { Workshop } from '@/lib/types'
-import { groupByDate } from '@/lib/utils'
-import { CalendarView } from '@/components/calendar/CalendarView'
+import { FilterableCalendar } from '@/components/FilterableCalendar'
 import { QuarterFilter } from '@/components/QuarterFilter'
 
 // Make this page dynamic so it re-fetches on each request
@@ -44,9 +43,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     return quarterOrder[b.quarter] - quarterOrder[a.quarter]
   })
 
-  // Group workshops by date (chronological with gaps filled in)
-  const groupedWorkshops = groupByDate(workshops)
-
   return (
     <div className="min-h-screen bg-background pb-32 pt-26 sm:pt-15">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -65,8 +61,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           <QuarterFilter availableQuarters={availableQuarters} />
         </div>
 
-        {/* Calendar */}
-        <CalendarView groupedWorkshops={groupedWorkshops} />
+        {/* Filterable Calendar */}
+        <FilterableCalendar workshops={workshops} />
       </div>
     </div>
   )

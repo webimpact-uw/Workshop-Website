@@ -22,28 +22,46 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
   }
 
   const getBadgeVariant = (type: string) => {
-    if (past) return 'past'
     return type as 'coding' | 'design' | 'collab' | 'pm'
   }
 
-  // Ensure workshopType is always an array (handle legacy data)
-  const workshopTypes = Array.isArray(workshop.workshopType)
-    ? workshop.workshopType
-    : [workshop.workshopType]
+  const getSkillLevelLabel = (level: string) => {
+    const labels = {
+      beginner: 'Beginner',
+      advanced: 'Advanced',
+    }
+    return labels[level as keyof typeof labels] || level
+  }
 
-  // Get primary type for border color (use first type)
+  // Ensure workshopType is always an array (handle legacy data and undefined)
+  const workshopTypes = workshop.workshopType
+    ? Array.isArray(workshop.workshopType)
+      ? workshop.workshopType
+      : [workshop.workshopType]
+    : []
+
+  // Get primary type for border color (use first type, or fallback to other tags)
   const primaryType = workshopTypes[0]
+
+  // Determine hover border color based on available tags
+  const getHoverBorderClass = () => {
+    if (primaryType === 'coding') return 'hover:border-[#8b5cf6]!'
+    if (primaryType === 'design') return 'hover:border-[#ec4899]!'
+    if (primaryType === 'collab') return 'hover:border-[#14b8a6]!'
+    if (primaryType === 'pm') return 'hover:border-[#f59e0b]!'
+    // Fallback to other tags if no workshop type
+    if (workshop.audience === 'member') return 'hover:border-[#3b82f6]!'
+    if (workshop.audience === 'public') return 'hover:border-[#3b82f6]!'
+    if (workshop.skillLevel && (Array.isArray(workshop.skillLevel) ? workshop.skillLevel.length > 0 : true)) return 'hover:border-gray-400!'
+    return ''
+  }
 
   return (
     <Card
       className={cn(
-        'border-2 transition-all',
+        'border-2! border-transparent! transition-all',
+        getHoverBorderClass(),
         {
-          'border-primary-600': !past && primaryType === 'coding',
-          'border-primary-400': !past && primaryType === 'design',
-          'border-[#14b8a6]': !past && primaryType === 'collab',
-          'border-[#f59e0b]': !past && primaryType === 'pm',
-          'border-gray-300 opacity-60': past,
           'ring-2 ring-primary-500 ring-offset-2': today,
         }
       )}
@@ -60,6 +78,29 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
                 {getWorkshopTypeLabel(type)}
               </Badge>
             ))}
+            {workshop.skillLevel && (
+              Array.isArray(workshop.skillLevel)
+                ? workshop.skillLevel.map((level) => (
+                    <span key={level} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                      {getSkillLevelLabel(level)}
+                    </span>
+                  ))
+                : (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                      {getSkillLevelLabel(workshop.skillLevel)}
+                    </span>
+                  )
+            )}
+            {workshop.audience === 'member' && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#3b82f6] text-white">
+                Member Only
+              </span>
+            )}
+            {workshop.audience === 'public' && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#3b82f6] text-white">
+                Public
+              </span>
+            )}
           </div>
         </div>
 

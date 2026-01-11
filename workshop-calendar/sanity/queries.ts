@@ -6,12 +6,15 @@ export const WORKSHOPS_QUERY = defineQuery(`
     title,
     description,
     workshopType,
+    skillLevel,
+    audience,
     quarter,
     year,
     dateTime,
     dayOfWeek,
     slideLink,
     recordingLink,
+    demoLink,
     preworkshopMaterials
   }
 `)
@@ -22,12 +25,15 @@ export const WORKSHOPS_BY_QUARTER_QUERY = defineQuery(`
     title,
     description,
     workshopType,
+    skillLevel,
+    audience,
     quarter,
     year,
     dateTime,
     dayOfWeek,
     slideLink,
     recordingLink,
+    demoLink,
     preworkshopMaterials
   }
 `)

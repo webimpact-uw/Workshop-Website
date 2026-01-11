@@ -33,7 +33,32 @@ export default defineType({
           { title: 'Project Manager', value: 'pm' },
         ],
       },
-      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'skillLevel',
+      title: 'Skill Level',
+      type: 'array',
+      description: 'Optional skill level for coding/design workshops',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: 'Beginner', value: 'beginner' },
+          { title: 'Advanced', value: 'advanced' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'audience',
+      title: 'Audience',
+      type: 'string',
+      description: 'Who can attend this workshop',
+      options: {
+        list: [
+          { title: 'Member Only', value: 'member' },
+          { title: 'General Public', value: 'public' },
+        ],
+        layout: 'dropdown',
+      },
     }),
     defineField({
       name: 'quarter',

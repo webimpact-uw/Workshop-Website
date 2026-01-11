@@ -8,8 +8,8 @@ interface WorkshopCardProps {
 }
 
 export function WorkshopCard({ workshop }: WorkshopCardProps) {
-  const past = isPastWorkshop(workshop.dateTime)
-  const today = isToday(workshop.dateTime)
+  const past = workshop.dateTime ? isPastWorkshop(workshop.dateTime) : false
+  const today = workshop.dateTime ? isToday(workshop.dateTime) : false
 
   const getWorkshopTypeLabel = (type: string) => {
     const labels = {

@@ -13,12 +13,13 @@ export function groupByDate(workshops: Workshop[]): GroupedWorkshops[] {
 
   // Sort workshops by date in reverse chronological order (most recent first)
   const sortedWorkshops = [...workshops].sort(
-    (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
+    (a, b) => new Date(b.dateTime || '').getTime() - new Date(a.dateTime || '').getTime()
   )
 
   // Create a map of date strings to workshops
   const workshopsByDate = new Map<string, Workshop[]>()
   sortedWorkshops.forEach((workshop) => {
+    if (!workshop.dateTime) return // Skip workshops without dateTime
     // Parse date in local timezone to avoid off-by-one errors
     const date = new Date(workshop.dateTime)
     const year = date.getFullYear()
